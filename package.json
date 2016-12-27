@@ -1,0 +1,15 @@
+{
+  "name": "components",
+  "version": "1.0.0",
+  "description": "Prueba de concepto propuesta componentes UI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@git.it.lan.com:2222/~cbernal/poc.git"
+  },
+  "author": "Claudio Mattioli",
+  "license": "ISC"
+}
