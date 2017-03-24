@@ -4,6 +4,8 @@
   "description": "Prueba de concepto propuesta componentes UI",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack-dev-server --content-base dist/",
+    "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,5 +13,19 @@
     "url": "ssh://git@git.it.lan.com:2222/~cbernal/poc.git"
   },
   "author": "Claudio Mattioli",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "^1.3.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-latest": "^6.24.0",
+    "jquery": "^3.2.1",
+    "node-sass": "^4.5.1",
+    "sass-loader": "^6.0.3",
+    "webpack": "^2.3.1",
+    "webpack-dev-server": "^2.4.2"
+  }
 }

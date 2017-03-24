@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                return vars;
+            }
+            function runApp(app){
+                var s = document.createElement("script");
+                s.type = "text/javascript";
+                s.src = "/assets/"+ app;
+                document.head.appendChild(s);
+            }
+            var appsMap = {
+                backbone: "SampleBackbone.bundle.js"
+            };
+            var app = appsMap[getUrlVars()["appType"]];
+            if (app) {
+                runApp(app);
+            }
+        </script>
+    <head>
+</html>
