@@ -8,4 +8,8 @@ const ButtonClass = Kan.getClass("KanButton");
 let btn = new ButtonClass({
     model: new Backbone.Model({ children: "hola btn"})
 });
+let btn2 = new ButtonClass({
+    model: new Backbone.Model({ children: "hola btn2"})
+});
 document.body.appendChild(btn.render().$el[0]);
+document.body.appendChild(btn2.render().$el[0]);
