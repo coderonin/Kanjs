@@ -10,6 +10,11 @@ module.exports = {
         publicPath: "/assets/",
         filename: "[name].bundle.js"
     },
+    resolve: {
+        alias: {
+            'backbone': require.resolve('backbone')
+        }
+    },
     module: {
         rules: [
             {

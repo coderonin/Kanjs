@@ -2,9 +2,9 @@ import Kan from '../Kan.js';
 
 Kan.define("KanButton",{
     alias: "kbutton",
-    tpl: "<button>{children}</button>",
+    tag: "button",
+    tpl: "{{children}}",
     cls: "k-button",
-    events: ['click'],
     listeners: {
         click: function(cmp, builder, event){
             console.log("internally components could do some logic before actually trigger an event");
