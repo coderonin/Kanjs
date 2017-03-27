@@ -47,7 +47,7 @@ export const BackboneBuilder = {
      *
      * @method trigger
      */
-    trigger: () => {
-
+    trigger: (eventName, cmp, event) => {
+        cmp.trigger(eventName, event);
     }
 };
