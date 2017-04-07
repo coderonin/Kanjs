@@ -16,12 +16,16 @@
                 document.head.appendChild(s);
             }
             var appsMap = {
-                backbone: "SampleBackbone.bundle.js"
+                backbone: "SampleBackbone.bundle.js",
+                react: "SampleReact.bundle.js",
             };
             var app = appsMap[getUrlVars()["appType"]];
             if (app) {
                 runApp(app);
             }
         </script>
-    <head>
+    </head>
+    <body>
+        <div id="application"></div>
+    </body>
 </html>

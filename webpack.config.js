@@ -3,7 +3,8 @@ var path = require("path");
 module.exports = {
     entry: {
         Kan : "./src/Kan.js",
-        SampleBackbone: "./sampleApps/backboneApp.js"
+        SampleBackbone: "./sampleApps/backboneApp.js",
+        SampleReact: "./sampleApps/reactApp.js"
     },
     output: {
         path: path.resolve(__dirname, "dist"),

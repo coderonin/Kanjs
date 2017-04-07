@@ -5,7 +5,7 @@ Kan.define("KanButton",{
     tag: "button",
     tpl: "{{children}}",
     cls: "k-button",
-    listeners: {
+    events: {
         click: function(cmp, builder, event){
             console.log("internally components could do some logic before actually trigger an event");
             builder.addCls(cmp, "x-focus");

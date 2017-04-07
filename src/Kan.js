@@ -54,7 +54,7 @@ const _cmpCache = {},
      * @param className
      */
     getClassByAlias = (alias) => {
-        if (!_cmpByAliasCache[className]) {
+        if (!_cmpByAliasCache[alias]) {
             throw "ERROR: There isn't a Class with alias '" + alias + ".";
         }
         return getClass(_cmpByAliasCache[alias]);
