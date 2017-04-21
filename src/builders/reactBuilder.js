@@ -13,87 +13,75 @@ export const ReactBuilder = {
     build: (cmpDefinition) => {
 
         const template = parseDOM(`<${cmpDefinition.tag}>` + cmpDefinition.tpl + `</${cmpDefinition.tag}>`);
-
-        return React.createClass({
+        const classDefinition = {
             getInitialState: function(){
+                this.tpl = JSON.parse(JSON.stringify(template));
                 let definition = JSON.parse(JSON.stringify(cmpDefinition));
-                let className = definition.cls;
+                let className = new Set();
+                className.add(definition.cls);
                 if (this.props.className) {
-                    className = [className, " ", this.props.className].join();
+                    className.add(this.props.className);
                 }
                 Object.assign(definition, this.props);
                 definition.className = className;
                 return definition;
             },
             render: function() {
-                return renderTree(template, this);
-            }
-        });
-
-/*
-        var definition = {
-            tagName: cmpDefinition.tag,
-            className: cmpDefinition.cls,
-            template: cmpDefinition.tpl,
-            events: {},
-            initialize: function(options) {
-                this.options = options;
-                if (this.model) {
-                    this.model.bind('change', this.render, this);
+                const me = this;
+                if (!me.tpl.attributes) {
+                    me.tpl.attributes = {};
+                    for (name of Object.keys(cmpDefinition.events || {})){
+                        me.tpl.attributes["on"+(name.replace(/\b\w/g, l => l.toUpperCase()))] =  me.eventHandlerBuilder(name);
+                    }
                 }
-                _.forEach(this.options.listeners || {}, (listenerHandler, name) => {
-                    this.on(name, listenerHandler, this);
-                });
+                return renderTree(me.tpl, this);
             },
-            render: function() {
-                let renderData = {
-                    children: "<div class='target-transpile'><div>"
-                };
-                if (this.model) {
-                     renderData = Object.assign(renderData, JSON.parse(JSON.stringify(this.model.toJSON())));
+            eventHandlerBuilder: function(eventName){
+                const me = this;
+                return function(e) {
+                    cmpDefinition.events[eventName](me, ReactBuilder, e);
                 }
-                this.$el.html(_.template(this.template)(renderData));
-                if (this.options.items) {
-                    BackboneBuilder.renderTree(this);
-                }
-                return this;
-            },
-            eventHandlerBuilder: (eventName) => function(e) {
-                cmpDefinition.events[eventName](this, BackboneBuilder, e);
             }
         };
 
-        _.forEach(cmpDefinition.events, (eventHandler, name) => {
-            definition.events[name] = definition.eventHandlerBuilder(name);
-        });
-        return Backbone.View.extend(definition);*/
+        return React.createClass(classDefinition);
     },
     /**
      *
      * @method addCls
      */
     addCls: (cmp, cls) => {
-        cmp.$el.addClass(cls);
+        let { className } = cmp.state;
+        if(!className.has(cls)){
+            className.add(cls);
+            cmp.setState({className});
+        }
     },
     /**
      *
      * @method removeCls
      */
     removeCls: (cmp, cls) => {
-        cmp.$el.removeClass(cls);
+        let { className } = cmp.state;
+        if(className.has(cls)){
+            className.delete(cls);
+            cmp.setState({className});
+        }
     },
     /**
      *
      * @method trigger
      */
     trigger: (eventName, cmp, event) => {
-        cmp.trigger(eventName, event);
+        if(cmp.props[eventName]){
+            cmp.props[eventName].apply(cmp, event);
+        }
     }
 };
 
 const renderTree = (definition, context) => {
     let tag = definition.type;
-    let attrs = Object.assign({ className: context.state.cls }, definition.attributes);
+    let attrs = Object.assign({ className: [...context.state.className].join(" ") }, definition.attributes);
     let content = definition.content;
     if (Array.isArray(content)) {
         content = content.map((item) => {
@@ -102,12 +90,12 @@ const renderTree = (definition, context) => {
                     let props = context.props;
                     let children = props["children"] || props["items"];
                     if (children){
-                        return resolveChildren(children);
+                        return Array.isArray(children) ? resolveChildren(children) : children;
                     }
                 }
                 return item;
             }
-            return renderTree(item);
+            return renderTree(item, context);
         });
     }
     return React.createElement(tag, attrs, content);

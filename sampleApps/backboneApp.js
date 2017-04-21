@@ -8,27 +8,29 @@ Kan.setBuilder(BackboneBuilder);
 const PanelClass = Kan.getClass("KanPanel");
 
 let panel = new PanelClass({
-    items: [
-        {
-            alias: "kbutton",
-            model: new Backbone.Model({ children: "hola btn"})
-        },
-        {
-            alias: "kbutton",
-            model: new Backbone.Model({
-                times: 0,
-                children: "hola btn2"
-            }),
-            listeners: {
-                click: function() {
-                    let times = this.model.get("times");
-                    times++;
-                    this.model.set("times", times);
-                    this.model.set("children", "clicked " + this.model.get("times") + " times");
+    model: {
+        items: [
+            {
+                alias: "kbutton",
+                model: new Backbone.Model({ children: "hola btn"})
+            },
+            {
+                alias: "kbutton",
+                model: {
+                    times: 0,
+                    children: "hola btn2"
+                },
+                listeners: {
+                    click: function() {
+                        let times = this.model.get("times");
+                        times++;
+                        this.model.set("times", times);
+                        this.model.set("children", "clicked " + this.model.get("times") + " times");
+                    }
                 }
             }
-        }
-    ]
+        ]
+    }
 });
 
 document.body.appendChild(panel.render().$el[0]);

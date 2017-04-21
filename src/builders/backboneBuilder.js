@@ -5,7 +5,7 @@ import _ from 'underscore';
 _.templateSettings.interpolate = /\{\{(.+?)\}\}/g;
 
 /**
- * @class Kan.BackboneBuilder
+ * @module Kan.BackboneBuilder
  * Concrete builder para una applicacion en Backbone
  */
 
@@ -18,12 +18,26 @@ export const BackboneBuilder = {
             events: {},
             initialize: function(options) {
                 this.options = options;
-                if (this.model) {
-                    this.model.bind('change', this.render, this);
+
+                if (!(this.model instanceof Backbone.Model)) {
+                    this.model = new Backbone.Model(this.model);
                 }
+                this.model.bind('change', this.syncRender, this);
+
                 _.forEach(this.options.listeners || {}, (listenerHandler, name) => {
                     this.on(name, listenerHandler, this);
                 });
+                this.parseModel();
+            },
+            parseModel: function(){
+                let items = this.model.get("items");
+                if (items){
+                    this.items = items;
+                }
+            },
+            syncRender: function(){
+                this.parseModel();
+                this.render();
             },
             render: function() {
                 let renderData = {
@@ -33,8 +47,12 @@ export const BackboneBuilder = {
                      renderData = Object.assign(renderData, JSON.parse(JSON.stringify(this.model.toJSON())));
                 }
                 this.$el.html(_.template(this.template)(renderData));
-                if (this.options.items) {
-                    BackboneBuilder.renderTree(this);
+                let target = this.$el.find(".target-transpile")[0];
+                if (this.items && target) {
+                    BackboneBuilder.renderTree(this, target);
+                }
+                if(target) {
+                    target.remove();
                 }
                 return this;
             },
@@ -70,15 +88,14 @@ export const BackboneBuilder = {
         cmp.trigger(eventName, event);
     },
 
-    renderTree: (cmp) => {
+    renderTree: (cmp, target) => {
         let classDefinition;
         let el;
         let items = [];
-        let target = cmp.$el.find(".target-transpile")[0];
         let current = target;
         let parent = current.parentNode;
 
-        _.forEach(cmp.options.items, (item) => {
+        _.forEach(cmp.items, (item) => {
             if (item.alias) {
                 classDefinition = Kan.getClassByAlias(item.alias);
                 item = new classDefinition(item);
@@ -88,7 +105,6 @@ export const BackboneBuilder = {
             current = el;
             items.push(item);
         });
-        target.remove();
-        cmp.options.items = items;
+        cmp.items = items;
     }
 };
