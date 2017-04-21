@@ -1,4 +1,5 @@
-import Kan from '../Kan.js';
+import Kan from '../../Kan.js';
+import './panel.scss';
 
 Kan.define("KanPanel",{
     alias: "kpanel",

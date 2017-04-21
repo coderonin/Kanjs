@@ -1,0 +1,10 @@
+@import '../_vars';
+
+.k-button {
+    background-color: blue;
+    color: white;
+
+    &.x-focus {
+        background-color: green;
+    }
+}

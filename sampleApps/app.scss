@@ -1,33 +1,8 @@
+@import '../src/components/_vars';
+
 /**
- * Mixins
+ * App Styles
  */
-
-
- /**
-  * Vars
-  */
-$white: #FFFFFF;
-$grey:  #EFEFEF;
-/**
- * Styles
- */
-
 body{
     background-color: $grey;
-}
-
-.k-panel {
-    background-color: $white;
-    border-color: grey;
-    padding: 12px;
-    box-shadow: 1px 1px 2px #b9b9b9;
-}
-
-.k-button {
-    background-color: blue;
-    color: white;
-
-    &.x-focus {
-        background-color: green;
-    }
 }

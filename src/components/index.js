@@ -1,2 +1,2 @@
-import './button.js';
-import './panel.js';
+import './button/button.js';
+import './panel/panel.js';

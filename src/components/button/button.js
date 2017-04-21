@@ -1,4 +1,5 @@
-import Kan from '../Kan.js';
+import Kan from '../../Kan.js';
+import './button.scss';
 
 Kan.define("KanButton",{
     alias: "kbutton",
